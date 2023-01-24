@@ -1,4 +1,4 @@
-package com.smithshodunke.jokelistapp.ui.theme
+package com.smithshodunke.jokelistapp.presentation.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

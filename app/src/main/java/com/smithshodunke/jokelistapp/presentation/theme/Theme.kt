@@ -1,4 +1,4 @@
-package com.smithshodunke.jokelistapp.ui.theme
+package com.smithshodunke.jokelistapp.presentation.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
