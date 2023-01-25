@@ -1,5 +1,6 @@
 package com.smithshodunke.jokelistapp.di
 
+import com.smithshodunke.jokelistapp.data.remote.JokeApi
 import com.smithshodunke.jokelistapp.util.Constants.BASE_URL
 import com.smithshodunke.jokelistapp.util.HttpLoggingInterceptor
 import dagger.Module
@@ -33,5 +34,11 @@ object NetworkModule {
             .client(okHttpClient)
             .baseUrl(BASE_URL)
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideJokeApi(retrofit: Retrofit): JokeApi {
+        return retrofit.create(JokeApi::class.java)
     }
 }
