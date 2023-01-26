@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import com.smithshodunke.jokelistapp.presentation.ui.home.HomeScreen
 import com.smithshodunke.jokelistapp.presentation.ui.home.HomeViewModel
 import com.smithshodunke.jokelistapp.presentation.ui.jokelist.JokeListScreen
+import com.smithshodunke.jokelistapp.presentation.ui.jokelist.JokeListViewModel
 
 @Composable
 fun JokeListAppGraph(
@@ -36,7 +37,10 @@ fun JokeListAppGraph(
         composable(
             route = JokeListDestinations.JOKE_LIST_ROUTE
         ) {
-            JokeListScreen()
+            val viewModel: JokeListViewModel = hiltViewModel()
+            JokeListScreen(
+                viewModel = viewModel
+            )
         }
     }
 }

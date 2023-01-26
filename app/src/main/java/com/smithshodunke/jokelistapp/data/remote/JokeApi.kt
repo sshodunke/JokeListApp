@@ -16,6 +16,6 @@ interface JokeApi {
     @GET(ANY_JOKE_ENDPOINT)
     suspend fun getListOfJokes(
         @Query("blacklistFlags") flags: String? = null,
-        @Query("amount") amount: Int = 2
+        @Query("amount") amount: Int
     ): JokeListItemDto
 }

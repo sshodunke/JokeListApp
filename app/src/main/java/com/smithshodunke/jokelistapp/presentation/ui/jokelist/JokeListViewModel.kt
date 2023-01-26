@@ -48,7 +48,7 @@ class JokeListViewModel @Inject constructor(
                     setViewState {
                         copy(
                             isLoading = false,
-                            joke = resource.data ?: listOf()
+                            jokesList = resource.data ?: listOf()
                         )
                     }
 

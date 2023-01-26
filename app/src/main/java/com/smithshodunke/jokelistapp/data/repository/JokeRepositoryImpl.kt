@@ -55,7 +55,8 @@ class JokeRepositoryImpl @Inject constructor(
 
         emit(safeApiCall(dispatcher.io()) {
             jokeApi.getListOfJokes(
-                flags = flagsParameter
+                flags = flagsParameter,
+                amount = amount
             ).toJokeList()
         })
     }

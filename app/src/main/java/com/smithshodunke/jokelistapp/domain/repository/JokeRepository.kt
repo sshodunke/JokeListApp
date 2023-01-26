@@ -18,7 +18,7 @@ interface JokeRepository {
      */
     suspend fun getListOfJokes(
         flags: List<Flags> = listOf(),
-        amount: Int = 5
+        amount: Int = 20
     ): Flow<Resource<List<Joke>>>
 }
 
