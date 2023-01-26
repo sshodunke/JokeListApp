@@ -26,8 +26,13 @@ class JokeListViewModel @Inject constructor(
 
     override fun handleStateEvent(stateEvent: JokeListStateEvent) {
         when (stateEvent) {
-            JokeListStateEvent.FetchMoreJokes -> {}
-            JokeListStateEvent.RefreshList -> {}
+            JokeListStateEvent.FetchMoreJokes -> {
+                if (viewState.value.isLoading) return
+
+                viewModelScope.launch {
+                    fetchJokes()
+                }
+            }
         }
     }
 
@@ -45,14 +50,14 @@ class JokeListViewModel @Inject constructor(
                     }
                 }
                 is Resource.Success -> {
+                    currentListOfJokes.addAll(resource.data ?: listOf())
+
                     setViewState {
                         copy(
                             isLoading = false,
-                            jokesList = resource.data ?: listOf()
+                            jokesList = currentListOfJokes
                         )
                     }
-
-                    currentListOfJokes.addAll(resource.data ?: listOf())
                 }
             }
         }
