@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import com.smithshodunke.jokelistapp.presentation.components.LoadingState
 import com.smithshodunke.jokelistapp.presentation.theme.SmallDimension
 
 @Composable
@@ -38,6 +39,11 @@ fun HomeScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        if(viewState.isLoading) {
+            LoadingState()
+        }
+
         Box(
             modifier = Modifier
                 .fillMaxSize()

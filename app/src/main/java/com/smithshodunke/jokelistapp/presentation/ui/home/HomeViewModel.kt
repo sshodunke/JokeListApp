@@ -32,19 +32,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    init {
-        viewModelScope.launch {
-            repository.getListOfJokes().collect { resource ->
-                Log.d("TAG", "ListOfJokes: ${resource.data}")
-                when (resource) {
-                    is Resource.Error -> {}
-                    is Resource.Loading -> {}
-                    is Resource.Success -> {}
-                }
-            }
-        }
-    }
-
     private suspend fun getNewJoke() {
         repository.getRandomJoke().collect { resource ->
             when (resource) {
