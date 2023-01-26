@@ -2,14 +2,14 @@ package com.smithshodunke.jokelistapp.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.smithshodunke.jokelistapp.presentation.ui.home.HomeScreen
+import com.smithshodunke.jokelistapp.presentation.ui.home.HomeViewModel
 import com.smithshodunke.jokelistapp.presentation.ui.jokelist.JokeListScreen
-import com.smithshodunke.jokelistapp.presentation.ui.randomjoke.RandomJokeScreen
-
 
 @Composable
 fun JokeListAppGraph(
@@ -25,12 +25,11 @@ fun JokeListAppGraph(
         composable(
             route = JokeListDestinations.JOKE_HOME_ROUTE
         ) {
+            val viewModel: HomeViewModel = hiltViewModel()
             HomeScreen(
-                navigateToRandomJokeScreen = {
-                    JokeListNavigationActions(navController).navigateToRandomJokeScreen
-                },
+                viewModel = viewModel,
                 navigateToListScreen = {
-                    JokeListNavigationActions(navController).navigateToJokeListScreen
+                    JokeListNavigationActions(navController).navigateToJokeListScreen()
                 }
             )
         }
@@ -38,12 +37,6 @@ fun JokeListAppGraph(
             route = JokeListDestinations.JOKE_LIST_ROUTE
         ) {
             JokeListScreen()
-        }
-
-        composable(
-            route = JokeListDestinations.RANDOM_JOKE_ROUTE
-        ) {
-            RandomJokeScreen()
         }
     }
 }

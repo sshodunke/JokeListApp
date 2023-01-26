@@ -9,11 +9,11 @@ fun JokeDto.toJoke(): Joke {
         category = this.category,
         type = this.type,
         setup = this.setup,
+        joke = this.joke,
         delivery = this.delivery,
         flags = this.flags,
         id = this.id,
         safe = this.safe,
-        lang = this.lang
     )
 }
 
