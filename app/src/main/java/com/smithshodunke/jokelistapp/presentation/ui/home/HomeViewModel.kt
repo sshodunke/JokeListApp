@@ -2,6 +2,7 @@ package com.smithshodunke.jokelistapp.presentation.ui.home
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.smithshodunke.jokelistapp.domain.model.flags.Flags
 import com.smithshodunke.jokelistapp.domain.repository.JokeRepository
 import com.smithshodunke.jokelistapp.presentation.util.BaseViewModel
 import com.smithshodunke.jokelistapp.util.Resource
@@ -33,7 +34,9 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun getNewJoke() {
-        repository.getRandomJoke().collect { resource ->
+        repository.getRandomJoke(
+            listOfFlags = listOf(Flags.EXPLICIT, Flags.NSFW, Flags.RACIST, Flags.SEXIST, Flags.RELIGIOUS)
+        ).collect { resource ->
             when (resource) {
                 is Resource.Error -> {
                     setViewState { HomeViewState(error = resource.message) }

@@ -1,6 +1,7 @@
 package com.smithshodunke.jokelistapp.presentation.ui.jokelist
 
 import androidx.lifecycle.viewModelScope
+import com.smithshodunke.jokelistapp.domain.model.flags.Flags
 import com.smithshodunke.jokelistapp.domain.model.joke.Joke
 import com.smithshodunke.jokelistapp.domain.repository.JokeRepository
 import com.smithshodunke.jokelistapp.presentation.util.BaseViewModel
@@ -37,7 +38,9 @@ class JokeListViewModel @Inject constructor(
     }
 
     private suspend fun fetchJokes() {
-        jokeRepository.getListOfJokes().collect { resource ->
+        jokeRepository.getListOfJokes(
+            listOfFlags = listOf(Flags.EXPLICIT, Flags.NSFW, Flags.RACIST, Flags.SEXIST, Flags.RELIGIOUS)
+        ).collect { resource ->
             when (resource) {
                 is Resource.Error -> {
                     setViewState {

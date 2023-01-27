@@ -7,9 +7,4 @@ data class Flags(
     val racist: Boolean,
     val religious: Boolean,
     val sexist: Boolean
-) {
-    override fun toString(): String {
-
-        return super.toString()
-    }
-}
+)

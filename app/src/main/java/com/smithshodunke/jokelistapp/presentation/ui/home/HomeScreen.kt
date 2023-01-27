@@ -9,8 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import com.smithshodunke.jokelistapp.domain.model.joke.Joke
 import com.smithshodunke.jokelistapp.presentation.components.LoadingState
 import com.smithshodunke.jokelistapp.presentation.theme.SmallDimension
+import com.smithshodunke.jokelistapp.util.Constants.ERROR_RETRIEVING_JOKE
 
 @Composable
 fun HomeScreen(
@@ -81,20 +83,18 @@ fun HomeScreen(
                         verticalArrangement = Arrangement.Center
                     ) {
                         viewState.joke?.let { joke ->
-                            if (!joke.setup.isNullOrEmpty() && !joke.delivery.isNullOrEmpty()) {
-                                Text(text = joke.setup, textAlign = TextAlign.Center)
-                                Spacer(modifier = Modifier.height(SmallDimension))
-                                Text(text = joke.delivery, textAlign = TextAlign.Center)
-                            } else if (!joke.joke.isNullOrEmpty()) {
-                                Text(text = joke.joke, textAlign = TextAlign.Center)
-                            } else {
-                                Text(
-                                    text = "Error in retrieving joke",
-                                    textAlign = TextAlign.Center
-                                )
+                            when (joke) {
+                                is Joke.SinglePartJoke -> {
+                                    Text(text = joke.joke, textAlign = TextAlign.Center)
+                                }
+                                is Joke.TwoPartJoke -> {
+                                    Text(text = joke.setup, textAlign = TextAlign.Center)
+                                    Spacer(modifier = Modifier.height(SmallDimension))
+                                    Text(text = joke.delivery, textAlign = TextAlign.Center)
+                                }
                             }
                         } ?: run {
-                            Text(text = "Error in retrieving joke", textAlign = TextAlign.Center)
+                            Text(text = ERROR_RETRIEVING_JOKE, textAlign = TextAlign.Center)
                         }
                     }
                 }

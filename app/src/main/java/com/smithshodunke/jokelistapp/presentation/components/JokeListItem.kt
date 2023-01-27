@@ -18,15 +18,16 @@ fun JokeListItem(
             .padding(MediumDimension),
         verticalArrangement = Arrangement.Center
     ) {
-        if (joke.setup != null && joke.delivery !=null) {
-            Column {
-                Text(joke.setup)
-                Spacer(modifier = Modifier.height(SmallDimension))
-                Text(text = joke.delivery)
+        when (joke) {
+            is Joke.SinglePartJoke -> {
+                Text(joke.joke)
             }
-        } else {
-            joke.joke?.let { joke ->
-                Text(joke)
+            is Joke.TwoPartJoke -> {
+                Column {
+                    Text(joke.setup)
+                    Spacer(modifier = Modifier.height(SmallDimension))
+                    Text(text = joke.delivery)
+                }
             }
         }
     }
