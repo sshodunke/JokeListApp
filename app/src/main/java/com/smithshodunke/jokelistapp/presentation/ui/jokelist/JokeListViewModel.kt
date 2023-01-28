@@ -44,12 +44,18 @@ class JokeListViewModel @Inject constructor(
             when (resource) {
                 is Resource.Error -> {
                     setViewState {
-                        JokeListViewState(error = resource.message)
+                        copy(
+                            isLoading = false,
+                            error = resource.message
+                        )
                     }
                 }
                 is Resource.Loading -> {
                     setViewState {
-                        copy(isLoading = true)
+                        copy(
+                            error = null,
+                            isLoading = true
+                        )
                     }
                 }
                 is Resource.Success -> {

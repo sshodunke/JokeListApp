@@ -6,5 +6,5 @@ data class HomeViewState(
     val isLoading: Boolean = false,
     val isDialogShown: Boolean = false,
     val joke: Joke? = null,
-    val error: String? = null,
+    val error: String? = null
 )

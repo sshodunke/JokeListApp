@@ -1,5 +1,6 @@
 package com.smithshodunke.jokelistapp.presentation.ui.home
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -8,6 +9,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import com.smithshodunke.jokelistapp.domain.model.joke.Joke
 import com.smithshodunke.jokelistapp.presentation.components.LoadingState
@@ -20,6 +22,7 @@ fun HomeScreen(
     navigateToListScreen: () -> Unit
 ) {
     val viewState = viewModel.viewState.value
+    val context = LocalContext.current
 
     HomeScreen(
         viewState = viewState,
@@ -28,6 +31,13 @@ fun HomeScreen(
             viewModel.handleStateEvent(stateEvent)
         }
     )
+
+
+    if (viewModel.showToast.value) {
+        Toast.makeText(context, viewState.error, Toast.LENGTH_SHORT).show()
+        viewModel.toggleToast(show = false)
+    }
+
 }
 
 @Composable
@@ -41,30 +51,16 @@ fun HomeScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        if(viewState.isLoading) {
+        if (viewState.isLoading) {
             LoadingState()
         }
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(0.5f),
-            contentAlignment = Alignment.Center
-        ) {
-            Button(onClick = { setStateEvent(HomeStateEvent.GetNewJoke) }) {
-                Text(text = "Random Joke!")
-            }
+        Button(onClick = { setStateEvent(HomeStateEvent.GetNewJoke) }) {
+            Text(text = "Random Joke!")
         }
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(0.5f),
-            contentAlignment = Alignment.Center
-        ) {
-            Button(onClick = navigateToListScreen) {
-                Text(text = "List of Jokes!")
-            }
+
+        Button(onClick = navigateToListScreen) {
+            Text(text = "List of Jokes!")
         }
 
         if (viewState.isDialogShown) {
