@@ -1,5 +1,6 @@
 package com.smithshodunke.jokelistapp.presentation.ui.jokelist
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.smithshodunke.jokelistapp.domain.model.flags.Flags
 import com.smithshodunke.jokelistapp.domain.model.joke.Joke
@@ -14,10 +15,17 @@ import javax.inject.Inject
 class JokeListViewModel @Inject constructor(
     private val jokeRepository: JokeRepository
 ) : BaseViewModel<JokeListStateEvent, JokeListViewState>(
-    initialState = JokeListViewState()
+    initialState = JokeListViewState(
+        selectedFlagsList = setOf(
+            Flags.EXPLICIT,
+            Flags.NSFW,
+            Flags.RACIST,
+            Flags.RELIGIOUS,
+            Flags.SEXIST
+        )
+    )
 ) {
-
-    private val currentListOfJokes = mutableListOf<Joke>()
+    private var currentListOfJokes = mutableListOf<Joke>()
 
     init {
         viewModelScope.launch {
@@ -34,12 +42,38 @@ class JokeListViewModel @Inject constructor(
                     fetchJokes()
                 }
             }
+            JokeListStateEvent.OpenSettings -> {
+                setViewState { copy(isDialogShown = true) }
+            }
+            JokeListStateEvent.DismissSettings -> {
+                setViewState { copy(isDialogShown = false) }
+            }
+            is JokeListStateEvent.SelectedTickbox -> {
+                val selectedFlag = stateEvent.flag
+                val list: MutableSet<Flags> = viewState.value.selectedFlagsList.toMutableSet()
+                Log.d("TAG", "handleStateEvent: $list")
+
+                if (selectedFlag in viewState.value.selectedFlagsList) {
+                    list.remove(selectedFlag)
+                    setViewState { copy(selectedFlagsList = list) }
+                } else {
+                    list.add(selectedFlag)
+                    setViewState { copy(selectedFlagsList = list) }
+                }
+            }
+            is JokeListStateEvent.RefreshList -> {
+                if (viewState.value.isLoading) return
+
+                viewModelScope.launch {
+                    fetchJokes(refreshList = true)
+                }
+            }
         }
     }
 
-    private suspend fun fetchJokes() {
+    private suspend fun fetchJokes(refreshList: Boolean = false) {
         jokeRepository.getListOfJokes(
-            listOfFlags = listOf(Flags.EXPLICIT, Flags.NSFW, Flags.RACIST, Flags.SEXIST, Flags.RELIGIOUS)
+            listOfFlags = viewState.value.selectedFlagsList.toList()
         ).collect { resource ->
             when (resource) {
                 is Resource.Error -> {
@@ -59,10 +93,15 @@ class JokeListViewModel @Inject constructor(
                     }
                 }
                 is Resource.Success -> {
-                    currentListOfJokes.addAll(resource.data ?: listOf())
+                    if (refreshList) {
+                        currentListOfJokes = resource.data?.toMutableList() ?: mutableListOf()
+                    } else {
+                        currentListOfJokes.addAll(resource.data ?: listOf())
+                    }
 
                     setViewState {
                         copy(
+                            isDialogShown = false,
                             isLoading = false,
                             jokesList = currentListOfJokes
                         )
