@@ -32,7 +32,7 @@ fun JokeListScreen(
     )
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun JokeListScreen(
     viewState: JokeListViewState,

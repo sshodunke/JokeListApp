@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.smithshodunke.jokelistapp.domain.model.flags.Flags
 import com.smithshodunke.jokelistapp.domain.repository.JokeRepository
+import com.smithshodunke.jokelistapp.domain.usecase.GetRandomJokeUseCase
 import com.smithshodunke.jokelistapp.presentation.util.BaseViewModel
 import com.smithshodunke.jokelistapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: JokeRepository
+    private val getRandomJoke: GetRandomJokeUseCase
 ) : BaseViewModel<HomeStateEvent, HomeViewState>(
     initialState = HomeViewState()
 ) {
@@ -36,7 +37,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun getNewJoke() {
-        repository.getRandomJoke(
+        getRandomJoke(
             listOfFlags = listOf(
                 Flags.EXPLICIT,
                 Flags.NSFW,

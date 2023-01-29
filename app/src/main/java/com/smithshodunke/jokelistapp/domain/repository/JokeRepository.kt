@@ -1,9 +1,7 @@
 package com.smithshodunke.jokelistapp.domain.repository
 
-import com.smithshodunke.jokelistapp.domain.model.flags.Flags
-import com.smithshodunke.jokelistapp.domain.model.joke.Joke
-import com.smithshodunke.jokelistapp.util.Resource
-import kotlinx.coroutines.flow.Flow
+import com.smithshodunke.jokelistapp.data.remote.dto.JokeDto
+import com.smithshodunke.jokelistapp.data.remote.dto.JokeListItemDto
 
 interface JokeRepository {
 
@@ -11,14 +9,14 @@ interface JokeRepository {
      * Returns a random joke
      */
     suspend fun getRandomJoke(
-        listOfFlags: List<Flags> = listOf()
-    ): Flow<Resource<Joke>>
+        flags: String = ""
+    ): JokeDto
 
     /**
      * Returns a list of jokes
      */
     suspend fun getListOfJokes(
-        listOfFlags: List<Flags> = listOf(),
+        flags: String,
         amount: Int = 20
-    ): Flow<Resource<List<Joke>>>
+    ): JokeListItemDto
 }

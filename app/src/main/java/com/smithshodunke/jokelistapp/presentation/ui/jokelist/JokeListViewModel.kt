@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.smithshodunke.jokelistapp.domain.model.flags.Flags
 import com.smithshodunke.jokelistapp.domain.model.joke.Joke
-import com.smithshodunke.jokelistapp.domain.repository.JokeRepository
+import com.smithshodunke.jokelistapp.domain.usecase.GetJokesUseCase
 import com.smithshodunke.jokelistapp.presentation.util.BaseViewModel
 import com.smithshodunke.jokelistapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class JokeListViewModel @Inject constructor(
-    private val jokeRepository: JokeRepository
+    private val getJokes: GetJokesUseCase
 ) : BaseViewModel<JokeListStateEvent, JokeListViewState>(
     initialState = JokeListViewState(
         selectedFlagsList = setOf(
@@ -72,7 +72,7 @@ class JokeListViewModel @Inject constructor(
     }
 
     private suspend fun fetchJokes(refreshList: Boolean = false) {
-        jokeRepository.getListOfJokes(
+        getJokes(
             listOfFlags = viewState.value.selectedFlagsList.toList()
         ).collect { resource ->
             when (resource) {
