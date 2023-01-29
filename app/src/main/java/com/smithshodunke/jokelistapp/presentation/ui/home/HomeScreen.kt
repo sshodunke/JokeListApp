@@ -65,6 +65,7 @@ fun HomeScreen(
 
         if (viewState.isDialogShown) {
             AlertDialog(
+                title = { Text(text = "Random Joke") },
                 onDismissRequest = { setStateEvent(HomeStateEvent.DismissDialog) },
                 confirmButton = {
                     TextButton(
